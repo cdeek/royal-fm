@@ -1,4 +1,4 @@
-import { Mic, MicOff } from "react-feather";
+import { Mic, MicOff, ArrowLeft } from "react-feather";
 import React, { useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
 
@@ -10,6 +10,7 @@ export default function LiveBroadcast() {
   const [inputDevices, setInputDevices] = useState([]);
   const [comments, setComments] = useState([]);
   const [status, setStatus] = useState('offline');
+  const [clientsOnline, setClientsOnline] = useState(0);
   const [selectedDeviceId, setSelectedDeviceId] = useState('');
 
   useEffect(() => {
@@ -37,11 +38,11 @@ export default function LiveBroadcast() {
     })
     
     socket.current.on('new-client', data => {
-     setComments((prev) => [...prev, data]);
+     setClientsOnline(data - 1);
     })
     
     socket.current.on('offline', data => {
-     setComments((prev) => [...prev, data]);
+     alert(data);
     })
     
     socket.current.on('disconnect', () => setStatus('offline'));
@@ -93,11 +94,14 @@ export default function LiveBroadcast() {
 
   return (
     <>
-      <h1 className="text-red-600">Broadcast</h1>
-      <p>Status: You are currently {status}</p>
-      <div>
+      <header className="flex text-white bg-gray-600 py-4 px-2 m-0 w-full">
+         <ArrowLeft size={25} />
+         <h1 className="text-xl mx-auto font-bold">Live Streamer</h1>
+      </header>
+      <div className="bg-[#3a3d40] text-white p-2">
+        <p>Status: You are currently {status}</p><br />
         <label htmlFor="selectInputDevice">Select Input Device:</label>
-        <select id="selectInputDevice" onChange={(e) => setSelectedDeviceId(e.target.value)}>
+        <select className="w-[200px] p-2 rounded-md float-right bg-gray-400" id="selectInputDevice" onChange={(e) => setSelectedDeviceId(e.target.value)}>
           <option value="">Select Device</option>
           {inputDevices.map(device => (
             <option key={device.deviceId} value={device.deviceId}>
@@ -105,8 +109,7 @@ export default function LiveBroadcast() {
             </option>
           ))}
         </select>
-      </div>
-      <div className="flex flex-col items-center w-full">
+      <div className="mt-20 flex flex-col items-center w-full">
         <button
           type="button"
           title={title}
@@ -117,12 +120,17 @@ export default function LiveBroadcast() {
         </button>
         <p>{title}</p>
       </div>
-      <div className="overflow-y-scroll border-2 border-red-600 w-1/2 mx-2 h-[150px]">
+      <br />
+      <h3>Listners online: {clientsOnline}</h3>
+      <br />
+      <fieldset className="overflow-y-scroll border-2 bg-black w-full p-2 rounded-md h-[300px]">
+       <legend className="text-red-300">- Comments -</legend>
         {
          comments.map((m, index) => (
           <p key={index}>{m}</p>
          ))
         }
+      </fieldset>
       </div>
     </>
   );

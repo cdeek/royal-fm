@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Headphones } from "react-feather";
+import { Headphones, ArrowLeft, Send } from "react-feather";
 import { io } from "socket.io-client";
 
 const url = 'http://localhost:2220';
@@ -27,7 +27,7 @@ export default function LiveStream() {
  
  const sendMessage = () => {
   if (message) {
-   socket.current.emit('message', message);
+   socket.current.emit('message', `${socket.current.id}: ${message}`);
    setMessage('');
   }
  }
@@ -73,28 +73,39 @@ export default function LiveStream() {
 
   return (
     <>
+     <header className="flex text-white bg-gray-600 py-4 px-2 m-0 w-full">
+        <ArrowLeft size={25} />
+        <h1 className="text-xl mx-auto font-bold">Royal Fm Live Streaming</h1>
+     </header>
+    <div className="bg-[#3a3d40] text-white p-2">
       <p>status: you are currently {status}</p>
-      <div className="flex flex-col items-center h-full">
+      <div className="mt-20 flex flex-col items-center h-full">
         <h1 className="text-5xl font-bold">
           {!canPlay ? "Click to Listen" : "Listening..."}
         </h1>
         <button 
         onClick={handleStream} 
-        className="rounded-full p-5 bg-transparent border-2 border-blue-300 focus:border-red-600 hover:bg-gray-700 transition-all" 
+        className="mt-8 rounded-full p-5 bg-transparent border-2 border-blue-300 focus:border-red-600 hover:bg-gray-700 transition-all" 
         >
           <Headphones size={50} />
         </button>
       </div>
       <br />
-      <div className="overflow-y-scroll border-2 border-red-600 w-1/2 mx-2 h-[150px]">
+      <fieldset className="overflow-y-scroll border-2 bg-black w-full p-2 rounded-md h-[200px]">
+       <legend className="text-red-300">- Comments -</legend>
         {
          comments.map((m, index) => (
           <p key={index}>{m}</p>
          ))
         }
+      </fieldset>
+      <div className="my-4 flex text-gray-600 align-items-center w-full">
+        <textarea className="p-2 rounded-l-md w-[85%]" onChange={(e)=> setMessage(e.target.value)} value={message} type="text" id="message-input" placeholder="Send a Comment..." />
+        <button className="bg-blue-500 text-white rounded-r-md p-2 w-[15%]" onClick={sendMessage}>
+         <Send size={25} />
+        </button>
       </div>
-      <input onChange={(e)=> setMessage(e.target.value)} value={message} type="text" id="message-input" placeholder="Type your message" />
-      <button onClick={sendMessage}>Send</button>
+     </div>
     </>
   )
 }

@@ -2,6 +2,7 @@ import fs from 'node:fs/promises'
 import express from 'express'
 import http from "http";
 import { Server as IOServer } from "socket.io";
+import userRouter from "./routes/user.js";
 
 // Constants
 const isProduction = process.env.NODE_ENV === 'production'
@@ -19,38 +20,43 @@ const ssrManifest = isProduction
 // Create http server
 const app = express();
 const server = http.createServer(app);
-const io = new IOServer(server);
-
-// , {
-//     cors: {
-//         origin: "http://localhost:5173",
-//     },
-// }
+const io = new IOServer(server, {
+    cors: {
+        origin: "http://localhost:2220",
+    },
+});
 
 (async () => {
   const clients = new Set();
 
   io.on("connection", (socket) => {
     clients.add(socket.id);
-    console.log(clients);
-    io.emit('new-client', `Clients online: ${clients.size}`);
+    
+    io.emit('new-client', clients.size);
 
     socket.on("staff-audio-stream", (data) => {
       socket.volatile.broadcast.emit("audio-stream", data);
     });
 
     socket.on("message", (data) => {
-     console.log(data)
       io.emit("message", data);
     });
 
     socket.on('disconnect', () => {
       clients.delete(socket.id);
+      io.emit('new-client', clients.size);
       io.emit("offline", `Listener with ID ${socket.id} left the stream.`);
-      io.emit('new-client', `Clients online: ${clients.size}`);
-      console.log(`Listener with ID ${socket.id} left the stream.`, `Clients online: ${clients.size}`)
     });
   });
+  
+  // express server
+  
+  // middlewares
+  app.use(express.json());
+ // app.use(cors({origin: 'http://localhost:5173'}));
+  
+  // routes
+  app.use('/users', userRouter);
   
 })();
 
