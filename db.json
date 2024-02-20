@@ -1,9 +1,11 @@
 {
-  "users": [
-    {
-     "email": "sabubakarsadiq77@gmail.com",
-     "password": "MTIzNDU2YQ=="
-    }
+   "users": [
+      {
+         "_id": 0,
+         "email": "sabubakarsadiq78@gmail.com",
+         "password": "MTIzNDU2",
+         "name": "sadiq sani"
+      },
    ],
-  "products": []
+   "news": []
 }

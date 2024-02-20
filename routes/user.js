@@ -38,7 +38,7 @@ router.post('/login', async (req, res) => {
   try{
     const db = readData();
     const user = await db.users.find(item => {
-      return item.email === email.toLowerCase();
+      return item.email === email;
     });
   if(!user){
     throw Error('no such email')
@@ -60,56 +60,54 @@ router.post('/login', async (req, res) => {
 
 // signup
 router.post('/signup', async (req, res) => {
-  
-  const { name, email, password } = req.body;
+ const { name, email, password } = req.body;
     
-    if(!email || !password || !name){
+ if(!email || !password || !name){
     res.status(400).json({error: 'all field must be filled'})
-  };
-  
- try {
-  // validator
-  // if(!validator.isEmail(email)){
-  //   throw Error('Input a valid email')
-  // };
-  // if(!validator.isStrongPassword(password)){
-  //   throw Error('password is not strong enough')
-  // };
-  
-  let db = readData();
-  let _id = db.users.length;
-  const user = await db.users.find(item => {
-      return item.email === email;
-    });
-  if(user){
-    throw Error('email already exist')
-  }
-  
-// hashing password
-//const salt = bcrypt.genSalt(10)
-//  const hash = bcrypt.hash(password, salt)
-// the password will be password: hash
-  
-  const hash = btoa(password)
-
-  const newUser = () => { 
-    db.users.unshift(
-      {
-        _id,
-        email.toLowerCase(),
-        password: hash, 
-        name,
+  } else {
+   try {
+    // validator
+    // if(!validator.isEmail(email)){
+    //   throw Error('Input a valid email')
+    // };
+    // if(!validator.isStrongPassword(password)){
+    //   throw Error('password is not strong enough')
+    // };
+    
+    let db = readData();
+    let _id = db.users.length;
+    const user = await db.users.find(item => {
+        return item.email === email;
       });
-    return JSON.stringify(db, null, 3);
-  };
-  writeData(newUser());
+    if(user){
+      throw Error('email already exist')
+    }
+    
+  // hashing password
+  //const salt = bcrypt.genSalt(10)
+  //  const hash = bcrypt.hash(password, salt)
+  // the password will be password: hash
+    
+    const hash = btoa(password)
   
- // create token 
-//  const token = createToken(user._id);
-  
-  res.status(200).json({name, email,});
-  
- } catch(error) {res.status(400).json({error: error.message})}
+    const newUser = () => { 
+      db.users.push(
+        {
+          _id,
+          email,
+          password: hash, 
+          name,
+        });
+      return JSON.stringify(db, null, 3);
+    };
+    writeData(newUser());
+    
+    res.status(200).json({message: "Account created Successful"});
+    
+   } catch(error) {
+    res.status(400).json({error: error.message})
+   }
+  }
 });
 
 export default router;

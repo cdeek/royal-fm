@@ -1,9 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from 'react';
+import { LogIn } from 'react-feather';
 import { useHook }  from '../context/use_context';
 
-export default function App() {
- const { user, dispatch } = useHook();
+export default function Login() {
+ const { dispatch } = useHook();
  const [email, setEmail] = useState('');
  const [password, setPassword] = useState('');
  const [error, setError] = useState('');
@@ -46,7 +47,7 @@ export default function App() {
         <label htmlFor="password">Password</label>
         <input className="text-gray-700 outline-none p-2 rounded-md w-full" type="password" onChange={(e) => setPassword(e.target.value)} id="Password" placeholder="enter your password"/>
         {!loading &&
-          <button className="bg-blue-800 w-full p-2">Login</button>
+          <button className="flex align-items-center bg-blue-800 w-full p-2">Login</button>
         }
         {loading &&
           <button className="bg-blue-800 w-full p-2" disabled={true} >Loging in...</button>
