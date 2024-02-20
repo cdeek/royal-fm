@@ -47,7 +47,7 @@ export default function Login() {
         <label htmlFor="password">Password</label>
         <input className="text-gray-700 outline-none p-2 rounded-md w-full" type="password" onChange={(e) => setPassword(e.target.value)} id="Password" placeholder="enter your password"/>
         {!loading &&
-          <button className="flex align-items-center bg-blue-800 w-full p-2">Login</button>
+          <button className="bg-blue-800 w-full p-2">Login</button>
         }
         {loading &&
           <button className="bg-blue-800 w-full p-2" disabled={true} >Loging in...</button>

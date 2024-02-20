@@ -75,7 +75,7 @@ router.post('/signup', async (req, res) => {
     // };
     
     let db = readData();
-    let _id = db.users.length;
+    let _id = `${db.users.length}_${Date()}`;
     const user = await db.users.find(item => {
         return item.email === email;
       });
@@ -98,7 +98,7 @@ router.post('/signup', async (req, res) => {
           password: hash, 
           name,
         });
-      return JSON.stringify(db, null, 3);
+      return JSON.stringify(db, null, 2);
     };
     writeData(newUser());
     

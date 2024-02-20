@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { Headphones, ArrowLeft, Send } from "react-feather";
+import { Headphones, Send } from "react-feather";
 import { io } from "socket.io-client";
+import Header from "../components/header"
 
 const url = 'http://localhost:2220';
 export default function LiveStream() {
@@ -37,13 +38,16 @@ export default function LiveStream() {
   
   if (!canPlay) {
     try {
+      const chunks = [];
+      const removing = false;
+      const sourceBuffer = null;
       const audioContext = new AudioContext();
       const mediaSource = new MediaSource();
       audioElement.src = URL.createObjectURL(mediaSource);
 
       if (MediaSource.isTypeSupported('audio/webm; codecs=opus')) {
         mediaSource.onsourceopen = () => {
-          const sourceBuffer = mediaSource.addSourceBuffer('audio/webm; codecs=opus');
+          sourceBuffer = mediaSource.addSourceBuffer('audio/webm; codecs=opus');
           sourceBuffer.mode = "sequence";
 
           socket.current.on("audio-stream", (data) => {
@@ -66,6 +70,8 @@ export default function LiveStream() {
       alert('Failed to initialize audio playback.');
     }
   } else {
+    if (sourceBuffer?.updating) sourceBuffer?.abort();
+    if (mediaSource.readyState === "open") source.endOfStream();
     audioElement.pause();
     setCanPlay(false);
   }
@@ -73,10 +79,8 @@ export default function LiveStream() {
 
   return (
     <>
-     <header className="flex text-white bg-gray-600 py-4 px-2 m-0 w-full">
-        <ArrowLeft size={25} />
-        <h1 className="text-xl mx-auto font-bold">Royal Fm Live Streaming</h1>
-     </header>
+    <Header />
+    <h1 className="text-xl mx-auto font-bold">Royal Fm Live Streaming</h1>
     <div className="bg-[#3a3d40] text-white p-2">
       <p>status: you are currently {status}</p>
       <div className="mt-20 flex flex-col items-center h-full">
@@ -100,7 +104,7 @@ export default function LiveStream() {
         }
       </fieldset>
       <div className="my-4 flex text-gray-600 align-items-center w-full">
-        <textarea className="p-2 rounded-l-md w-[85%]" onChange={(e)=> setMessage(e.target.value)} value={message} type="text" id="message-input" placeholder="Send a Comment..." />
+        <textarea className="p-2 outline-none rounded-l-md w-[85%]" onChange={(e)=> setMessage(e.target.value)} value={message} type="text" id="message-input" placeholder="Send a Comment..." />
         <button className="bg-blue-500 text-white rounded-r-md p-2 w-[15%]" onClick={sendMessage}>
          <Send size={25} />
         </button>

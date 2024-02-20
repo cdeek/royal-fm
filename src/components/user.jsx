@@ -1,12 +1,10 @@
-import {useHook}  from '../context/use_context';
-import { LogOut, ChevronLeft } from 'react-feather';
+import { LogOut, ChevronLeft, UserPlus } from 'react-feather';
 import { useNavigate } from "react-router-dom";
 import { useState, useRef } from 'react';
 import  SignUp from './create_user';
 
 
-export default function User({modal}) {
- const { user, dispatch } = useHook();
+export default function User({modal, user}) {
  const [tab, setTab] = useState('nav');
  
  window.onclick = (event) => {
@@ -27,7 +25,27 @@ export default function User({modal}) {
    </span>
    <br /><br /><br />
    {tab === "nav" &&
-    <div className="animate">
+    <div className="animate text-center">
+      <ul className="list-none text-gray-700 text-xl">
+        <li>
+          {user.name.toUpperCase()}
+        </li><br />
+        <li className="flex gap-4" onClick={() => setTab('signup')}>
+          <UserPlus size={25} />Create a Staff Account
+        </li><hr />
+        <li onClick={() => setTab('')}>
+          
+        </li><hr />
+        <li onClick={() => setTab('')}>
+          
+        </li><hr />
+        <li onClick={() => setTab('')}>
+          
+        </li><hr />
+        <li onClick={() => setTab('')}>
+          
+        </li>
+      </ul><br />
       <button 
       className="flex align-items-center bg-red-700 text-white p-2 rounded-md"
       onClick={() => {

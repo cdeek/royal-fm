@@ -1,11 +1,11 @@
 {
    "users": [
-      {
-         "_id": 0,
-         "email": "sabubakarsadiq78@gmail.com",
-         "password": "MTIzNDU2",
-         "name": "sadiq sani"
-      },
-   ],
+     {
+      "_id": 0,
+      "email": "sadiq@royalfm.com",
+      "name": "sadiq",
+      "password": "cm95YWxmbQ=="
+     }
+    ],
    "news": []
 }

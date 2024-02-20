@@ -1,6 +1,7 @@
-import { Mic, MicOff, ArrowLeft } from "react-feather";
+import { Mic, MicOff } from "react-feather";
 import React, { useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
+import Header from "../components/staff_header";
 
 const url = 'http://localhost:2220';
 
@@ -94,10 +95,8 @@ export default function LiveBroadcast() {
 
   return (
     <>
-      <header className="flex text-white bg-gray-600 py-4 px-2 m-0 w-full">
-         <ArrowLeft size={25} />
-         <h1 className="text-xl mx-auto font-bold">Live Streamer</h1>
-      </header>
+      <Header />
+      <h1 className="text-xl mx-auto font-bold">Live Streamer</h1>
       <div className="bg-[#3a3d40] text-white p-2">
         <p>Status: You are currently {status}</p><br />
         <label htmlFor="selectInputDevice">Select Input Device:</label>
