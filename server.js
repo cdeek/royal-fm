@@ -3,6 +3,7 @@ import express from 'express'
 import http from "http";
 import { Server as IOServer } from "socket.io";
 import userRouter from "./routes/user.js";
+import mail from "./routes/mail.js";
 
 // Constants
 const isProduction = process.env.NODE_ENV === 'production'
@@ -57,6 +58,7 @@ const io = new IOServer(server, {
   
   // routes
   app.use('/users', userRouter);
+  app.use('/send-mail', mail);
   
 })();
 

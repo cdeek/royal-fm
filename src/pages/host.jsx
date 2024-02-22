@@ -7,6 +7,7 @@ const url = 'http://localhost:2220';
 
 export default function LiveBroadcast() {
   const socket = useRef(null);
+  const [streaming, setStreaming] = useState(false);
   const [recording, setRecording] = useState(false);
   const [inputDevices, setInputDevices] = useState([]);
   const [comments, setComments] = useState([]);
@@ -30,7 +31,7 @@ export default function LiveBroadcast() {
   }, []);
 
   useEffect(() => {
-    socket.current = io(url);
+    if (socket.current === null) socket.current =  io(url);
     
     socket.current.on('connect', () => setStatus(`online`));
     
@@ -55,48 +56,65 @@ export default function LiveBroadcast() {
     };
   }, []);
 
-  const Icon = recording ? MicOff : Mic;
-  const title = `${recording ? "Stop" : "Start"} recording`;
+  const Icon = streaming ? MicOff : Mic;
+  const title = `${streaming ? "Stop" : "Start"} recording`;
+  const chunks = [];
 
   const onClickMic = async () => {
-   try {
-     const constraints = { audio: { deviceId: { exact: selectedDeviceId } } };
-     const mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
- 
-     if (MediaRecorder.isTypeSupported('audio/webm; codecs=opus')) {
-       const recorder = new MediaRecorder(mediaStream, { mimeType: 'audio/webm; codecs=opus' });
-       const chunks = [];
- 
-       recorder.ondataavailable = (event) => {
-         if (event.data.size > 0) {
-           socket.current.volatile.emit('staff-audio-stream', event.data);
-           chunks.push(event.data);
+   let mediaStream;
+   let recorder;
+   
+   if (!streaming) {
+    try {
+      const constraints = { audio: { deviceId: { exact: selectedDeviceId } } };
+      const mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
+  
+      if (MediaRecorder.isTypeSupported('audio/webm; codecs=opus')) {
+        recorder = new MediaRecorder(mediaStream, { mimeType: 'audio/webm; codecs=opus' });
+  
+        recorder.ondataavailable = (event) => {
+          if (event.data.size > 0) {
+            socket.current.volatile.emit('staff-audio-stream', event.data);
+            if (recording) chunks.push(event.data);
+          }
+        };
+        
+        recorder.onstop = () => {
+          // const audioBlob = new Blob(chunks, { type: 'audio/webm; codecs=opus' });
+          // const audioURL = URL.createObjectURL(audioBlob);
+         if (chunks.length > 5) {
+           const filename = prompt('name the file');
          }
-       };
-       
-       recorder.onstop = () => {
-         const audioBlob = new Blob(chunks, { type: 'audio/webm; codecs=opus' });
-         const audioURL = URL.createObjectURL(audioBlob);
-         
-       };
-       
-       recorder.start(3000);
-       setRecording(true);
-     } else {
-       throw new Error('The preferred MIME type "audio/webm; codecs=opus" is not supported.');
-       alert('The preferred MIME type "audio/webm; codecs=opus" is not supported.')
-     }
-   } catch (error) {
-     console.error('Error initializing stream:', error);
-     alert('Failed to initialize stream. Please check your microphone settings.');
+        };
+        
+        recorder.start(3000);
+        setStreaming(true);
+      } else {
+        throw new Error('The preferred MIME type "audio/webm; codecs=opus" is not supported.');
+        alert('The preferred MIME type "audio/webm; codecs=opus" is not supported.')
+      }
+    } catch (error) {
+      console.error('Error initializing stream:', error);
+      alert('Failed to initialize stream. Please check your microphone settings.');
+    }
+   } else {
+    recorder.stop();
+    mediaStream = null;
+    setStreaming(false);
    }
+   
+  return () => socket.current.off('staff-audio-stream');
 };
-
+ 
+ const resumePause = () => {
+  if (recording) setRecording(false);
+  if (!recording) setRecording(true);
+ }
 
   return (
     <>
       <Header />
-      <h1 className="text-xl mx-auto font-bold">Live Streamer</h1>
+      <h1 className="text-xl mx-auto font-bold">- Royal Fm Live Streamer</h1>
       <div className="bg-[#3a3d40] text-white p-2">
         <p>Status: You are currently {status}</p><br />
         <label htmlFor="selectInputDevice">Select Input Device:</label>

@@ -12,10 +12,19 @@ export default function Nav({ menu }) {
          title="Close Modal">
            &times;
         </span>
-        <div className="w-[90%] bg-gray-300 p-2 rounded-md mx-auto mt-16 text-gray-700 text-xl">
-          <Link onClick={close} className="flex gap-2" to="/streaming">
+        <div className="w-[90%] p-2 mx-auto mt-16 text-gray-700 text-xl">
+          <Link onClick={close} className="flex gap-2 bg-gray-300 p-2 my-4 rounded-sm" to="/">
             <Home size={25} />
-            <span>Home news</span>
+            <span>Home</span>
+          </Link>
+          <Link onClick={close} className="flex gap-2 bg-gray-300 p-2 my-4 rounded-sm" to="/headlines">
+            <span>Headlines</span>
+          </Link>
+          <Link onClick={close} className="flex gap-2 bg-gray-300 p-2 my-4 rounded-sm" to="/streaming">
+            <span>Live</span>
+          </Link>
+          <Link onClick={close} className="flex gap-2 bg-gray-300 p-2 my-4 rounded-sm" to="/contact">
+            <span>Contact</span>
           </Link>
         </div>
     </aside>

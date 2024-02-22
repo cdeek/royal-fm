@@ -13,7 +13,7 @@ export default function LiveStream() {
  
  
  useEffect(() => {
-    socket.current = io(url);
+    if (socket.current === null) socket.current =  io(url);
     socket.current.on('connect', () => setStatus('online'));
     
     socket.current.on('message', data => {
@@ -34,20 +34,21 @@ export default function LiveStream() {
  }
  
  const handleStream = () => {
+  let mediaSource;
+  let removing = false;
+  const chunks = [];
   const audioElement = new Audio();
   
   if (!canPlay) {
     try {
-      const chunks = [];
-      const removing = false;
-      const sourceBuffer = null;
       const audioContext = new AudioContext();
-      const mediaSource = new MediaSource();
+      
+      mediaSource = new MediaSource();
       audioElement.src = URL.createObjectURL(mediaSource);
-
+      
       if (MediaSource.isTypeSupported('audio/webm; codecs=opus')) {
         mediaSource.onsourceopen = () => {
-          sourceBuffer = mediaSource.addSourceBuffer('audio/webm; codecs=opus');
+          const sourceBuffer = mediaSource.addSourceBuffer('audio/webm; codecs=opus');
           sourceBuffer.mode = "sequence";
 
           socket.current.on("audio-stream", (data) => {
@@ -70,17 +71,17 @@ export default function LiveStream() {
       alert('Failed to initialize audio playback.');
     }
   } else {
-    if (sourceBuffer?.updating) sourceBuffer?.abort();
-    if (mediaSource.readyState === "open") source.endOfStream();
+    mediaSource = null;
     audioElement.pause();
     setCanPlay(false);
   }
-};
+  return () => socket.current.off("audio-stream");
+ };
 
   return (
     <>
     <Header />
-    <h1 className="text-xl mx-auto font-bold">Royal Fm Live Streaming</h1>
+    <h1 className="text-xl mx-auto font-bold">- Royal Fm Live Streaming</h1>
     <div className="bg-[#3a3d40] text-white p-2">
       <p>status: you are currently {status}</p>
       <div className="mt-20 flex flex-col items-center h-full">
