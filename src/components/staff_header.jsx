@@ -9,12 +9,13 @@ export default function Header() {
  const { user } = useHook();
  
  return(
-    <header className="flex text-white justify-between bg-gray-600 py-4 px-2 m-0 w-full">
+  <>
+    <header className="fixed top-0 flex text-white justify-between bg-gray-600 py-4 px-2 m-0 w-full">
      <div className="flex gap-2">
        <Link to="/staff">
         <Home size={25} />
        </Link>
-       <h1 className="text-xl font-bold">Royal Fm Staff</h1>
+       <h1 className="text-xl font-bold">Diksa Fm Staff</h1>
      </div>
      <h2 className="">Hello {user.name.toUpperCase()}</h2>
      <div>
@@ -25,5 +26,7 @@ export default function Header() {
       <Menu modal={userButton} user={user} />
     </div>
    </header>
+   <div className="mb-20"></div>
+ </>
   )
 }

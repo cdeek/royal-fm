@@ -81,7 +81,7 @@ export default function LiveStream() {
   return (
     <>
     <Header />
-    <h1 className="text-xl mx-auto font-bold">- Royal Fm Live Streaming</h1>
+    <h1 className="text-xl mx-auto font-bold">- Diksa Fm Live Streaming</h1>
     <div className="bg-[#3a3d40] text-white p-2">
       <p>status: you are currently {status}</p>
       <div className="mt-20 flex flex-col items-center h-full">

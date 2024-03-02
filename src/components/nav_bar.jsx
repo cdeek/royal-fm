@@ -26,6 +26,9 @@ export default function Nav({ menu }) {
           <Link onClick={close} className="flex gap-2 bg-gray-300 p-2 my-4 rounded-sm" to="/contact">
             <span>Contact</span>
           </Link>
+          <Link onClick={close} className="flex gap-2 bg-gray-300 p-2 my-4 rounded-sm" to="/staff">
+            <span>Staff</span>
+          </Link>
         </div>
     </aside>
   )

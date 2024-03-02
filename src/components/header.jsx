@@ -1,6 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Home, Menu, ArrowLeft } from "react-feather";
 import { useEffect, useRef, useState } from 'react';
+import logoImg from '../assets/logo.png';
 import Nav from "./nav_bar";
 
 export default function Header() {
@@ -19,7 +20,8 @@ export default function Header() {
  }, [location])
  
  return(
-    <header className="flex text-white justify-between bg-gray-600 py-4 px-2 m-0 w-full">
+  <>
+    <header className="fixed top-0 flex text-white justify-between bg-gray-600 py-4 px-2 m-0 w-full">
      <div className="flex gap-2">
       { isHome ?
        <Link to="/">
@@ -28,7 +30,8 @@ export default function Header() {
       :
        <ArrowLeft onClick={() => navigate(-1)} size={25} />
      }
-      <h1 className="text-xl font-bold">Royal Fm</h1>
+      <h1 className="text-xl font-bold">Diksa Fm</h1>
+      <img src={logoImg} width="35" alt="logo" />
      </div>
      <h2 className=""></h2>
      <div>
@@ -39,5 +42,7 @@ export default function Header() {
       <Nav menu={menuButton} />
     </div>
    </header>
+   <div className="mb-20"></div>
+  </>
   )
 }

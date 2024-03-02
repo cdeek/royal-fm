@@ -2,8 +2,10 @@ import fs from 'node:fs/promises'
 import express from 'express'
 import http from "http";
 import { Server as IOServer } from "socket.io";
+import cors from 'cors';
 import userRouter from "./routes/user.js";
 import mail from "./routes/mail.js";
+import post from "./routes/post.js";
 
 // Constants
 const isProduction = process.env.NODE_ENV === 'production'
@@ -54,11 +56,12 @@ const io = new IOServer(server, {
   
   // middlewares
   app.use(express.json());
- // app.use(cors({origin: 'http://localhost:5173'}));
+  app.use(cors({origin: 'http://localhost:5173'}));
   
   // routes
   app.use('/users', userRouter);
   app.use('/send-mail', mail);
+  app.use('/post', post);
   
 })();
 

@@ -114,7 +114,7 @@ export default function LiveBroadcast() {
   return (
     <>
       <Header />
-      <h1 className="text-xl mx-auto font-bold">- Royal Fm Live Streamer</h1>
+      <h1 className="text-xl mx-auto font-bold">- Diksa Fm Live Streamer</h1>
       <div className="bg-[#3a3d40] text-white p-2">
         <p>Status: You are currently {status}</p><br />
         <label htmlFor="selectInputDevice">Select Input Device:</label>

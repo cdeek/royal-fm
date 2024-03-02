@@ -2,28 +2,26 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url'
 import express from 'express';
-// import validator from 'validator';
-// import jwt from 'jsonwebtoken';
+import validator from 'validator';
+import jwt from 'jsonwebtoken';
 
 // jwt
-// const createToken = (_id) => {
-//   return jwt.sign({ _id }, 'dadauntsisbromebrobrosisbrobrosisbaga', { expiresIn: '1d' })
-// };
+const createToken = (_id) => {
+  return jwt.sign({ _id }, 'dadauntsisbromebrobrosisbrobrosisbaga', { expiresIn: '1d' })
+};
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-console.log(__dirname)
-
 const dbFile = path.resolve(__dirname, '../db.json');
 
 // read file
-const readData = () => {
+export const readData = () => {
   const db = fs.readFileSync(dbFile);
   return JSON.parse(db);
 };
 // write file
-const writeData = (db) => {
+export const writeData = (db) => {
     fs.writeFileSync(dbFile, db);
 };
 
@@ -48,8 +46,8 @@ router.post('/login', async (req, res) => {
     throw Error('incorrect password')
   }
    // create token 
- // const token = createToken(user._id);
-  res.status(200).json({name: user.name, email});
+  const token = createToken(user._id);
+  res.status(200).json({name: user.name, email, token });
   
   }catch(error) {
    res.status(401).json({error: error.message})
@@ -66,13 +64,13 @@ router.post('/signup', async (req, res) => {
     res.status(400).json({error: 'all field must be filled'})
   } else {
    try {
-    // validator
-    // if(!validator.isEmail(email)){
-    //   throw Error('Input a valid email')
-    // };
-    // if(!validator.isStrongPassword(password)){
-    //   throw Error('password is not strong enough')
-    // };
+    validator
+    if(!validator.isEmail(email)){
+      throw Error('Input a valid email')
+    };
+    if(!validator.isStrongPassword(password)){
+      throw Error('password is not strong enough')
+    };
     
     let db = readData();
     let _id = `${db.users.length}_${Date()}`;

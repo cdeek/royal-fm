@@ -1,11 +1,18 @@
 {
-   "users": [
-     {
+  "users": [
+    {
       "_id": 0,
-      "email": "sadiq@royalfm.com",
-      "name": "sadiq",
+      "email": "royal@royalfm.com",
+      "name": "royal",
       "password": "cm95YWxmbQ=="
-     }
-    ],
-   "news": []
+    },
+    {
+      "_id": "1_Fri Mar 01 2024 10:12:16 GMT+0100 (West Africa Standard Time)",
+      "email": "diks@royalfm.com",
+      "password": "RGlrc2E5MD8=",
+      "name": "sadiq"
+    }
+  ],
+  "news": [],
+  "files": []
 }
