@@ -4,7 +4,7 @@ import { useState, useRef } from 'react';
 import  SignUp from './create_user';
 
 
-export default function User({modal, user}) {
+export default function User({modal, user, dispatch}) {
  const [tab, setTab] = useState('nav');
  
  window.onclick = (event) => {
@@ -12,6 +12,7 @@ export default function User({modal, user}) {
     modal.current.style.display = "none";
   }
 };
+ const navigate = useNavigate();
  
  return(
   <div ref={modal} className="hidden rounded-md bg-[whitesmoke] pb-6 w-[400px] fixed z-[2] right-2 overflow-auto">
@@ -51,7 +52,7 @@ export default function User({modal, user}) {
       onClick={() => {
         sessionStorage.removeItem('userData');
         dispatch({type: "LOGOUT"});
-        navigate('/statff/login');
+        navigate('/staff/login');
        }}>
          Logout <LogOut size={25} />
       </button>

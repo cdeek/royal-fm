@@ -6,6 +6,8 @@ import cors from 'cors';
 import userRouter from "./routes/user.js";
 import mail from "./routes/mail.js";
 import post from "./routes/post.js";
+import Delete from "./routes/delete.js";
+import Get from "./routes/get.js";
 
 // Constants
 const isProduction = process.env.NODE_ENV === 'production'
@@ -62,6 +64,8 @@ const io = new IOServer(server, {
   app.use('/users', userRouter);
   app.use('/send-mail', mail);
   app.use('/post', post);
+  app.use('/delete', Delete);
+  app.use('/get', Get);
   
 })();
 

@@ -20,8 +20,11 @@ export default function Nav({ menu }) {
           <Link onClick={close} className="flex gap-2 bg-gray-300 p-2 my-4 rounded-sm" to="/headlines">
             <span>Headlines</span>
           </Link>
-          <Link onClick={close} className="flex gap-2 bg-gray-300 p-2 my-4 rounded-sm" to="/streaming">
+          <Link onClick={close} className="flex gap-2 bg-gray-300 p-2 my-4 rounded-sm" to="/live-streaming">
             <span>Live</span>
+          </Link>
+          <Link onClick={close} className="flex gap-2 bg-gray-300 p-2 my-4 rounded-sm" to="/streams">
+            <span>Streams</span>
           </Link>
           <Link onClick={close} className="flex gap-2 bg-gray-300 p-2 my-4 rounded-sm" to="/contact">
             <span>Contact</span>

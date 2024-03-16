@@ -7,6 +7,7 @@ import Update from "./pages/update";
 import Login from "./pages/login";
 import Host from "./pages/host";
 import Listen from "./pages/listen";
+import Stream from "./pages/stream";
 import Contact from "./pages/contact";
 import NotFound from "./pages/NotFound";
 
@@ -19,7 +20,8 @@ export const Router = () => {
       <Route path="/staff" element={!user ? <Navigate to="/staff/login" /> : <Staff />} />
       <Route path="/staff/update" element={!user ? <Navigate to="/staff/login" /> : <Update />} />
       <Route path="/staff/login" element={user ? <Navigate to="/staff" /> : <Login />} />
-      <Route path="/streaming" element={<Listen />} />
+      <Route path="/live-streaming" element={<Listen />} />
+      <Route path="/streams" element={<Stream />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="*" element={<NotFound />} />
     </Routes>

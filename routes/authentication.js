@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { readData } from './user.js';
+import { readData } from '../file.js';
 
 const useAuth = async (req, res, next) => {
   // verify user is authenticated

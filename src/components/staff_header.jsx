@@ -6,7 +6,7 @@ import Menu from "./user";
 
 export default function Header() {
  const userButton = useRef();
- const { user } = useHook();
+ const { user, dispatch } = useHook();
  
  return(
   <>
@@ -23,7 +23,7 @@ export default function Header() {
          <User size={25} />
       </button>
       <br />
-      <Menu modal={userButton} user={user} />
+      <Menu modal={userButton} user={user} dispatch={dispatch} />
     </div>
    </header>
    <div className="mb-20"></div>
