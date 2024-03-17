@@ -2,21 +2,17 @@ import Header from "../components/header";
 import liveImg from '../assets/live.png';
 import { Link } from "react-router-dom";
 import NewsAPI from 'newsapi';
+import { useHook }  from '../context/use_context';
 import { useState, useEffect } from 'react';
 
 
 export default function App() {
- const [news, setNews] = useState([]);
- const [localNews, setLocalNews] = useState([]);
+ const { news, user } = useHook();
+ const [apiNews, setApiNews] = useState([]);
  
  useEffect(() => {
-  fetch('get/local-news')
-   .then(res => res.json())
-   .then(data => {
-     setLocalNews(data)
-   })
-   .catch(err => console.error(err));
-  
+   console.log(news)
+   console.log(user)
   async function fetchData() {
     const url = 'https://newsapi.org/v2/top-headlines?country=ng&apiKey=780a0a9d32654ef7b0408d321fc7f8bc';
    
@@ -24,7 +20,7 @@ export default function App() {
       const response = await fetch(url);
       if (response.ok) {
         const result = await response.json();
-        setNews(result.articles);
+        setApiNews(result.articles);
         console.log(result);
       } else {
         console.error('Response not okay:', response.status);
@@ -47,7 +43,7 @@ export default function App() {
       <h3 className="w-[160px] text-center mx-auto text-white bg-blue-600 p-1">LOCAL NEWS</h3>
         <div className="border-t-4 bg-white border-t-black flex flex-col gap-8">
          {
-          localNews.map((n) => (
+          news.map((n) => (
            <div key={n._id} to={n.url} className="bg-[whitesmoke] p-4 w-full">
             <img src={n.image} className="w-full h-[260px]" alt="news image" />
             <h2 className="text-semi-bold text-2xl">{n.heading}</h2>
@@ -60,7 +56,7 @@ export default function App() {
       <h3 className="w-[100px] text-center mx-auto text-white bg-blue-600 p-1">HEADLINES</h3>
         <div className="p-2 border-t-4 bg-white border-t-black flex flex-col gap-8">
          {
-          news.map((n,index) => (
+          apiNews.map((n,index) => (
            <Link key={index} to={n.url} className="bg-[whitesmoke] p-2">
             <img src={n.urlToImage} alt="news image" />
             <small className="text-semi-bold">{n.source.name}</small>

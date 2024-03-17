@@ -58,16 +58,16 @@ export default function Stream() {
       </video>
     }
     </div>
-    <div className="w-full">
+    <div className="w-full p-4">
     <br />
     {audios.map((a, index) => (
-      <span key={index} className="flex" onClick={(e) => play(e, 'audio', a)}>
+      <span key={index} className="flex border-2 border-gray-700 my-2 rounded-md items-center gap-2 p-2 mx-auto w-[80%]" onClick={(e) => play(e, 'audio', a)}>
         <img src="logo.png" width={70} height={70} alt="audio" />
         <p>{a.slice(0,-4)}</p>
       </span>
     ))}
     {videos.map((v, index) => (
-      <span key={index} className="flex" onClick={(e) => play(e, 'video', v)}>
+      <span key={index} className="flex border-2 my-2 rounded-md border-gray-700 items-center gap-2 p-2 mx-auto w-[80%]" onClick={(e) => play(e, 'video', v)}>
         <img src="logo.png" width={70} height={70} alt="video" />
         <p>{v.slice(0,-4)}</p>
       </span>

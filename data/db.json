@@ -1,12 +1,4 @@
 {
-  "users": [
-    {
-      "_id": 0,
-      "email": "royal@royalfm.com",
-      "name": "royal",
-      "password": "cm95YWxmbQ=="
-    }
-  ],
   "news": [
     {
       "_id": "1_Thu Mar 14 2024 17:19:39 GMT+0100 (West Africa Standard Time)",

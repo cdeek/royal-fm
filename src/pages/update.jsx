@@ -5,25 +5,10 @@ export default function Update() {
   const [audios, setAudios] = useState([]);
   const [videos, setVideos] = useState([]);
   
-  useEffect(() => {
-    fetch('get/local-news')
-     .then(res => res.json())
-     .then(data => {
-       setLocalNews(data)
-      })
-     .catch(err => console.error(err));
-     
-    fetch('get/files')
-     .then(res => res.json())
-     .then(data => {
-       setAudios(data.audio);
-       setVideos(data.video);
-     })
-     .catch(err => console.error(err));
-  }, [])
   
  return(
-  <main className="flex justify-between">
+  <main className="flex p-2 justify-between">
+  <h2>hello</h2>
   {news.map((n) => (
     <>
    <h2>Delete News</h2>

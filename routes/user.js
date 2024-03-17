@@ -17,7 +17,7 @@ router.post('/login', async (req, res) => {
   }
   else{
   try{
-    const db = readData();
+    const db = readData().user;
     const user = await db.users.find(item => {
       return item.email === email;
     });
@@ -55,7 +55,7 @@ router.post('/signup', async (req, res) => {
       throw Error('password is not strong enough')
     };
     
-    let db = readData();
+    let db = readData().user;
     let _id = `${db.users.length}_${Date()}`;
     const user = await db.users.find(item => {
         return item.email === email;
