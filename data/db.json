@@ -1,18 +1,7 @@
 {
-  "news": [
-    {
-      "_id": "1_Thu Mar 14 2024 17:19:39 GMT+0100 (West Africa Standard Time)",
-      "heading": "Jioi6rfy7",
-      "body": "Kohn.0gm,'.\r\nJgfjpym",
-      "image": "IMG_20240311_174502_247.jpg"
-    }
-  ],
+  "news": [],
   "files": {
-    "audio": [
-      "2.mp3"
-    ],
-    "video": [
-      "17e742f2ff0574ba44468f9f2785deb4.mp4"
-    ]
+    "audio": [],
+    "video": []
   }
 }

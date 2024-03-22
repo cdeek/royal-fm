@@ -42,7 +42,7 @@ export default function Header() {
       <Nav menu={menuButton} />
     </div>
    </header>
-   <div className="mb-20"></div>
+   <div className="mb-[68px]"></div>
   </>
   )
 }

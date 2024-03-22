@@ -52,7 +52,7 @@ export default function User({modal, user, dispatch}) {
       onClick={() => {
         sessionStorage.removeItem('userData');
         dispatch({type: "LOGOUT"});
-        navigate('/staff/login');
+        navigate('/');
        }}>
          Logout <LogOut size={25} />
       </button>

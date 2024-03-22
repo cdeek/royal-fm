@@ -13,7 +13,7 @@ const useAuth = async (req, res, next) => {
 
   try {
     const { _id } = jwt.verify(token, 'dadauntsisbromebrobrosisbrobrosisbaga')
-    req.user = await readData().users.find(user => {return user._id === _id });
+    req.user = await readData().user.users.find(user => {return user._id === _id });
     next()
 
   } catch (error) {

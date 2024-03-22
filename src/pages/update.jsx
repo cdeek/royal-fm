@@ -1,39 +1,59 @@
-import { useState, useEffect } from 'react';
+import { useHook }  from '../context/use_context';
+import Header from "../components/staff_header";
+import { Trash2 } from "react-feather";
 
 export default function Update() {
-  const [news, setNews] = useState([]);
-  const [audios, setAudios] = useState([]);
-  const [videos, setVideos] = useState([]);
+  const { user, videos, audios, news } = useHook();
+
+  const deleteNews = async (id) => {
+    const res = await fetch(`/delete/news/${id}`, {
+      method: "DELETE",
+      headers: {
+      'Authorization': `bearer ${user.token}`,
+      }
+    });
+    const json = await res.json();
+    if (!res.ok) alert('failed to delete');
+    else alert('deleted');
+    console.error(json.error)
+  };
   
+  const deletefile = async (id) => {
+    const res = await fetch(`/delete/file/${id}`, {
+      method: "DELETE",
+      headers: {
+      'Authorization': `bearer ${user.token}`,
+      }
+    });
+    const json = await res.json();
+    if (!res.ok) alert('failed to delete');
+    else alert('deleted');
+    console.error(json.error)
+  };
   
  return(
-  <main className="flex p-2 justify-between">
+  <>
+  <Header />
+  <main className="grid gap-4">
   <h2>hello</h2>
   {news.map((n) => (
-    <>
-   <h2>Delete News</h2>
-    <div key={n._id} className="flex my-4 w-[95%] mx-auto bg-[whitesmoke] rounded-md">
-     <div className="w-[150px] h-full">
-       <img src={n.image} className="w-full h-full rounded-l-md" alt="product" />
+    <div key={n._id} className="flex my-4 w-[95%] mx-auto bg-[whitesmoke] rounded-md overflow-hidden">
+     <div className="w-[180px] h-[150px]">
+       <img src={'/' + n.image} className="w-full h-full" alt="news image" />
      </div>
-     <div className="m-4">
-       <p>{n.heading}</p>
-       <button className="" onClick={() => deleteNews(n._id) }>
-         Delete
-       </button>
+     <div className="w-full flex items-center justify-between m-4">
+       <p className="flex-[80%]">{n.heading}</p>
+       <Trash2 className="flex-[20]" size={35} onClick={() => deleteNews(n._id) } />
      </div>
     </div>
-  </>
   ))}
   
   {videos.map((n, index) => (
     <>
     <h2>Delete Video Streams</h2>
-    <div key={index} className="flex my-4 w-[95%] mx-auto bg-[whitesmoke] rounded-md">
+    <div key={index} className="flex p-4 my-4 gap-4 w-[95%] mx-auto bg-[whitesmoke] rounded-md">
      <span>{n}</span>
-     <button className="" onClick={() => deletefile(n, 'video') }>
-      Delete
-     </button>
+     <Trash2 size={35} onClick={() => deletefile(n) } />
     </div>
    </>
   ))}
@@ -41,14 +61,13 @@ export default function Update() {
   {audios.map((n, index) => (
     <>
     <h2>Delete Audio Streams</h2>
-    <div key={index} className="flex my-4 w-[95%] mx-auto bg-[whitesmoke] rounded-md">
+    <div key={index} className="flex p-4 my-4 gap-4 w-[95%] mx-auto bg-[whitesmoke] rounded-md">
      <span>{n}</span>
-     <button className="" onClick={() => deletefile(n, 'video') }>
-      Delete
-     </button>
+     <Trash2 className="" size={35} onClick={() => deletefile(n) } />
     </div>
   </>
   ))}
   </main>
+  </>
   )
 }

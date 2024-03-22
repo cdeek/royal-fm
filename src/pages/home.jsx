@@ -7,12 +7,10 @@ import { useState, useEffect } from 'react';
 
 
 export default function App() {
- const { news, user } = useHook();
+ const { news } = useHook();
  const [apiNews, setApiNews] = useState([]);
  
  useEffect(() => {
-   console.log(news)
-   console.log(user)
   async function fetchData() {
     const url = 'https://newsapi.org/v2/top-headlines?country=ng&apiKey=780a0a9d32654ef7b0408d321fc7f8bc';
    
@@ -37,7 +35,7 @@ export default function App() {
     <>
       <Header />
       <Link to="/live-streaming">
-       <img src={liveImg} className="w-full h-[200px]" alt="live" />
+       <img src={liveImg} className="w-[90%] mx-auto h-[200px]" alt="live" />
       </Link><br />
       <main className="w-[90%] mx-auto flex flex-col gap-8  h-full">
       <h3 className="w-[160px] text-center mx-auto text-white bg-blue-600 p-1">LOCAL NEWS</h3>
@@ -45,7 +43,7 @@ export default function App() {
          {
           news.map((n) => (
            <div key={n._id} to={n.url} className="bg-[whitesmoke] p-4 w-full">
-            <img src={n.image} className="w-full h-[260px]" alt="news image" />
+            <img src={'/' + n.image} className="w-full h-[260px]" alt="news image" />
             <h2 className="text-semi-bold text-2xl">{n.heading}</h2>
             <p>{n.body}</p>
           </div>

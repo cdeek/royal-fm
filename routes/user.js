@@ -1,7 +1,7 @@
 import express from 'express';
 import validator from 'validator';
 import jwt from 'jsonwebtoken';
-import { readData, writeData } from '../file.js';
+import { readData, writeUser } from '../file.js';
 
 // jwt
 const createToken = (_id) => {
@@ -81,7 +81,7 @@ router.post('/signup', async (req, res) => {
         });
       return JSON.stringify(db, null, 2);
     };
-    writeData(newUser());
+    writeUser(newUser());
     
     res.status(200).json({message: "Account created Successful"});
     

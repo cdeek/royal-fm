@@ -29,8 +29,8 @@ try {
  const {heading, body} = req.body;
  const image = req.file ? req.file.filename : null;
  
- let db = await readData();
- let _id = `${db.users.length}_${Date()}`;
+ let db = await readData().data;
+ let _id = Date();
  
  const newPost = () => { 
    db.news.push({_id, heading, body, image});
@@ -50,7 +50,7 @@ router.post('/upload-files', upload.fields([{ name: 'audio', maxCount: 1}, { nam
   } else {
     const audio = req.files['audio'] ? req.files['audio'][0].filename : null;
     const video = req.files['video'] ? req.files['video'][0].filename : null;
-    let db = await readData();
+    let db = await readData().data;
     
     const newPost = () => { 
       if (audio) db.files.audio.push(audio);

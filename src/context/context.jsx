@@ -86,7 +86,6 @@ export default function ContextProvider({children}) {
         dispatch1({ type: 'NEWS', payload: data.news });
         dispatch1({ type: 'AUDIOS', payload: data.files.audio });
         dispatch1({ type: 'VIDEOS', payload: data.files.video });
-        console.log(data);
       } catch (error) {
         dispatch1({ type: 'FETCH_ERROR', payload: error.message });
       }

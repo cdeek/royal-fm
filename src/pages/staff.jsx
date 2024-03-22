@@ -150,7 +150,7 @@ export default function Staff() {
                      Start Stream
                  </button>
              </Link>
-             <Link to="/staff/update" className="w-full">
+             <Link to="/staff/delete" className="w-full">
                  <button type="button" className={buttonClassName}>
                      <div className={iconClassName}>
                          <Edit size={32} />

@@ -57,7 +57,7 @@ export default function LiveBroadcast() {
   }, []);
 
   const Icon = streaming ? MicOff : Mic;
-  const title = `${streaming ? "Stop" : "Start"} recording`;
+  const title = `${streaming ? "Stop" : "Start"} Live Stream`;
   const chunks = [];
 
   const onClickMic = async () => {
@@ -67,7 +67,7 @@ export default function LiveBroadcast() {
    if (!streaming) {
     try {
       const constraints = { audio: { deviceId: { exact: selectedDeviceId } } };
-      const mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
+      mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
   
       if (MediaRecorder.isTypeSupported('audio/webm; codecs=opus')) {
         recorder = new MediaRecorder(mediaStream, { mimeType: 'audio/webm; codecs=opus' });
@@ -82,9 +82,9 @@ export default function LiveBroadcast() {
         recorder.onstop = () => {
           // const audioBlob = new Blob(chunks, { type: 'audio/webm; codecs=opus' });
           // const audioURL = URL.createObjectURL(audioBlob);
-         if (chunks.length > 5) {
-           const filename = prompt('name the file');
-         }
+          if (chunks.length > 5) {
+            const filename = prompt('name the file');
+          }
         };
         
         recorder.start(3000);
@@ -98,7 +98,7 @@ export default function LiveBroadcast() {
       alert('Failed to initialize stream. Please check your microphone settings.');
     }
    } else {
-    recorder.stop();
+    //recorder.stop();
     mediaStream = null;
     setStreaming(false);
    }

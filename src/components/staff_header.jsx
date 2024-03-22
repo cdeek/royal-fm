@@ -12,7 +12,7 @@ export default function Header() {
   <>
     <header className="fixed top-0 flex text-white justify-between bg-gray-600 py-4 px-2 m-0 w-full">
      <div className="flex gap-2">
-       <Link to="/staff">
+       <Link to="/">
         <Home size={25} />
        </Link>
        <h1 className="text-xl font-bold">Diksa Fm Staff</h1>
@@ -26,7 +26,7 @@ export default function Header() {
       <Menu modal={userButton} user={user} dispatch={dispatch} />
     </div>
    </header>
-   <div className="mb-20"></div>
+   <div className="mb-[68px]"></div>
  </>
   )
 }
