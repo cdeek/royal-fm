@@ -1,6 +1,7 @@
 import {useEffect, useRef, useState} from 'react';
 import { useHook }  from '../context/use_context';
 import Header from "../components/header";
+import { Music, Video } from 'react-feather';
 
 export default function Programs() {
   const { audios, videos } = useHook();
@@ -40,8 +41,8 @@ export default function Programs() {
     <div>
     {audioId &&
     <div className="bg-black h-[300px] overflow-hidden">
-     <img src="logo.png" className="w-[90%] mb-1 h-[240px] mx-auto" alt="Audio" />
-      <audio ref={audioRef} className="w-[90%] mx-auto" controls autoPlay>
+     <Music className="mx-auto my-4" size={200} />
+      <audio ref={audioRef} className="w-[80%] mx-auto" controls autoPlay>
         <source src={`get/file-stream/${audioId}`}></source>
       </audio>
     </div>
@@ -58,8 +59,8 @@ export default function Programs() {
     <hr />
     {audios.map((a, index) => (
       <>
-      <span key={index} className="flex my-2 rounded-md items-center gap-2 p-2 w-full" onClick={(e) => play(e, 'audio', a)}>
-        <img src="logo.png" width={70} height={70} alt="audio" />
+      <span key={index} className="flex my-2 rounded-md items-center gap-4 p-2 w-full" onClick={(e) => play(e, 'audio', a)}>
+        <Music size={60} />
         <p>{a.slice(0,-4)}</p>
       </span>
       <hr />
@@ -67,8 +68,8 @@ export default function Programs() {
     ))}
     {videos.map((v, index) => (
       <>
-      <span key={index} className="flex my-2 rounded-md items-center gap-2 p-2 w-full" onClick={(e) => play(e, 'video', v)}>
-        <img src="logo.png" width={70} height={70} alt="video" />
+      <span key={index} className="flex my-2 rounded-md items-center gap-4 p-2 w-full" onClick={(e) => play(e, 'video', v)}>
+        <Video size={60} />
         <p>{v.slice(0,-4)}</p>
       </span>
       <hr />
@@ -77,6 +78,7 @@ export default function Programs() {
     </div>
    </>
    }
+   <br />
   </main>
   )
 }

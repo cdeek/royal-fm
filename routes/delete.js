@@ -1,6 +1,3 @@
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
 import multer from 'multer';
 import express from 'express';
 import useAuth from './authentication.js';
@@ -9,13 +6,10 @@ import { readData, writeData } from '../file.js';
 const router = express.Router();
 router.use(useAuth);
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 router.delete('/file/:name', async (req, res) => {
   try {
-    const fileName = req.params;
-    //await fs.unLink(path.join(path.resolve(__dirname, `../public/${fileName}`)));
+    const fileName = req.params.name;
+    await fs.unLink(`../public/${fileName}`);
     
     const checkFileType = () => {
       const mimeType = fileName.slice(-3);
@@ -48,10 +42,10 @@ router.delete('/file/:name', async (req, res) => {
 
 router.delete('/news/:id', async (req, res) => {
   try {
-    const fileName = req.params;
+    const fileName = req.params.id;
     const data = readData().news;
     console.log(data)
-   // await fs.unLink(path.join(path.resolve(__dirname, `../public/${fileName}`)));
+    await fs.unlink(`../public/${fileName}`);
     //const updatedData = await readData().news.filter((item) => item._id != fileName);
     //writeData(updatedData);
     res.status(200).json({message: 'file deleted'});

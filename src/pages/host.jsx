@@ -60,52 +60,57 @@ export default function LiveBroadcast() {
   const title = `${streaming ? "Stop" : "Start"} Live Stream`;
   const chunks = [];
 
+  let mediaStream;
+  let recorder;
+  
   const onClickMic = async () => {
-   let mediaStream;
-   let recorder;
-   
-   if (!streaming) {
-    try {
-      const constraints = { audio: { deviceId: { exact: selectedDeviceId } } };
-      mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
+    if (!streaming) {
+      try {
+        const constraints = { audio: { deviceId: { exact: selectedDeviceId } } };
+        mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
   
-      if (MediaRecorder.isTypeSupported('audio/webm; codecs=opus')) {
-        recorder = new MediaRecorder(mediaStream, { mimeType: 'audio/webm; codecs=opus' });
+        if (MediaRecorder.isTypeSupported('audio/webm; codecs=opus')) {
+          recorder = new MediaRecorder(mediaStream, { mimeType: 'audio/webm; codecs=opus' });
   
-        recorder.ondataavailable = (event) => {
-          if (event.data.size > 0) {
-            socket.current.volatile.emit('staff-audio-stream', event.data);
-            if (recording) chunks.push(event.data);
-          }
-        };
-        
-        recorder.onstop = () => {
-          // const audioBlob = new Blob(chunks, { type: 'audio/webm; codecs=opus' });
-          // const audioURL = URL.createObjectURL(audioBlob);
-          if (chunks.length > 5) {
-            const filename = prompt('name the file');
-          }
-        };
-        
-        recorder.start(3000);
-        setStreaming(true);
-      } else {
-        throw new Error('The preferred MIME type "audio/webm; codecs=opus" is not supported.');
-        alert('The preferred MIME type "audio/webm; codecs=opus" is not supported.')
+          recorder.ondataavailable = (event) => {
+            if (event.data.size > 0) {
+              socket.current.volatile.emit('staff-audio-stream', event.data);
+              if (recording) chunks.push(event.data);
+            }
+          };
+  
+          recorder.onstop = () => {
+            if (chunks.length > 5) {
+              const filename = prompt('name the file');
+            }
+          };
+  
+          recorder.start(100);
+          setStreaming(true);
+        } else {
+          throw new Error('The preferred MIME type "audio/webm; codecs=opus" is not supported.');
+        }
+      } catch (error) {
+        console.error('Error initializing stream:', error);
+        alert('Failed to initialize stream. Please check your microphone settings.');
       }
-    } catch (error) {
-      console.error('Error initializing stream:', error);
-      alert('Failed to initialize stream. Please check your microphone settings.');
+    } else {
+      stopStreaming();
     }
-   } else {
-    //recorder.stop();
-    mediaStream = null;
+  
+    return () => socket.current.off('staff-audio-stream');
+  };
+  
+  const stopStreaming = () => {
+    if (recorder.state !== 'inactive') {
+      recorder.stop();
+    }
+    if (mediaStream) {
+      mediaStream.getTracks().forEach(track => track.stop());
+    }
     setStreaming(false);
-   }
+  };
    
-  return () => socket.current.off('staff-audio-stream');
-};
- 
  const resumePause = () => {
   if (recording) setRecording(false);
   if (!recording) setRecording(true);

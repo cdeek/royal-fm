@@ -13,7 +13,10 @@ export default function Update() {
       }
     });
     const json = await res.json();
-    if (!res.ok) alert('failed to delete');
+    if (!res.ok) {
+      alert('failed to delete');
+      console.error(json.error)
+    }
     else alert('deleted');
     console.error(json.error)
   };
@@ -28,7 +31,6 @@ export default function Update() {
     const json = await res.json();
     if (!res.ok) alert('failed to delete');
     else alert('deleted');
-    console.error(json.error)
   };
   
  return(
@@ -43,7 +45,7 @@ export default function Update() {
      </div>
      <div className="w-full flex items-center justify-between m-4">
        <p className="flex-[80%]">{n.heading}</p>
-       <Trash2 className="flex-[20]" size={35} onClick={() => deleteNews(n._id) } />
+       <Trash2 className="flex-[20] text-red-600" size={35} onClick={() => deleteNews(n._id) } />
      </div>
     </div>
   ))}
@@ -53,7 +55,7 @@ export default function Update() {
     <h2>Delete Video Streams</h2>
     <div key={index} className="flex p-4 my-4 gap-4 w-[95%] mx-auto bg-[whitesmoke] rounded-md">
      <span>{n}</span>
-     <Trash2 size={35} onClick={() => deletefile(n) } />
+     <Trash2 size={35} className="text-red-600" onClick={() => deletefile(n) } />
     </div>
    </>
   ))}
@@ -63,7 +65,7 @@ export default function Update() {
     <h2>Delete Audio Streams</h2>
     <div key={index} className="flex p-4 my-4 gap-4 w-[95%] mx-auto bg-[whitesmoke] rounded-md">
      <span>{n}</span>
-     <Trash2 className="" size={35} onClick={() => deletefile(n) } />
+     <Trash2 className="text-red-600" size={35} onClick={() => deletefile(n) } />
     </div>
   </>
   ))}

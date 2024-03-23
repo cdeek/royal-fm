@@ -33,31 +33,35 @@ export default function LiveStream() {
   }
  }
  
- const handleStream = () => {
   let mediaSource;
   let removing = false;
   const chunks = [];
   const audioElement = new Audio();
   
-  if (!canPlay) {
+  const handleStream = () => {
+  if (!canPlay) { // If not currently playing
     try {
       const audioContext = new AudioContext();
-      
+
       mediaSource = new MediaSource();
       audioElement.src = URL.createObjectURL(mediaSource);
-      
+
       if (MediaSource.isTypeSupported('audio/webm; codecs=opus')) {
         mediaSource.onsourceopen = () => {
           const sourceBuffer = mediaSource.addSourceBuffer('audio/webm; codecs=opus');
           sourceBuffer.mode = "sequence";
 
           socket.current.on("audio-stream", (data) => {
-            sourceBuffer.appendBuffer(data);
+            try {
+              sourceBuffer.appendBuffer(data);
+            } catch (error) {
+              console.error('Error appending buffer:', error);
+            }
           });
 
           sourceBuffer.onerror = (e) => {
             console.error('Error appending buffer:', e);
-            alert('Failed to play audio stream.');
+            
           };
         }
       } else {
@@ -65,18 +69,19 @@ export default function LiveStream() {
       }
       document.body.appendChild(audioElement);
       audioElement.play();
-      setCanPlay(true);
+      setCanPlay(true); // Update playback state
     } catch (err) {
       console.error('Error initializing playback:', err);
       alert('Failed to initialize audio playback.');
     }
-  } else {
+  } else { // If currently playing, stop the stream
     mediaSource = null;
     audioElement.pause();
-    setCanPlay(false);
+    setCanPlay(false); // Update playback state
   }
+  
   return () => socket.current.off("audio-stream");
- };
+};
 
   return (
     <>
